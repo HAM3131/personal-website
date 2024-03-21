@@ -1,0 +1,2 @@
+# Web Project
+I just purchased the web domain `henryamanning.org` with the IONOS service, and I am going to work on this project to learn how to host from a web domain and make some cool utilities with javascript.
