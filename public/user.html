@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Coordinator</title>
+<style>
+  body { font-family: Arial, sans-serif; }
+  #username, #status, #friends, #go-menu { margin-bottom: 20px; }
+  .container { width: 300px; margin: auto; }
+  .section { border: 1px solid black; padding: 10px; }
+  .go-button { display: block; width: 100%; padding: 10px; margin-bottom: 10px; }
+  .friend {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+  }
+  .top-friend { font-weight: bold; }
+  #add-friends { margin-top: 10px; }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    fetchFriends();
+    setInterval(fetchFriends, 20000);
+  });
+
+  function fetchFriends() {
+    fetch('/friends', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify()
+    })
+    .then(response => response.json())
+    .then(friends => {
+      const container = document.getElementById('friends-list');
+      container.innerHTML = ''; // Clear existing contents if any
+      friends.forEach(friend => {
+          const friendElement = document.createElement('div');
+          friendElement.className = 'friend';
+
+          const nameElement = document.createElement('span');
+          nameElement.innerHTML = friend.name; // Assuming the friend object has a 'name' property
+          friendElement.appendChild(nameElement);
+
+          const statusElement = document.createElement('span');
+          statusElement.innerHTML = friend.status; // Assuming the friend object has a 'status' property
+          friendElement.appendChild(statusElement);
+
+          container.appendChild(friendElement);
+      });
+    })
+    .catch(error => {
+        console.error('Error fetching friends:', error);
+        document.getElementById('friends-list').innerHTML = 'Failed to load friends.';
+    });
+  }
+
+  function toggleStatusMenu() {
+    fetch('/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify()
+    })
+    .then(response => response.json())
+    .then(data => {
+      var status = data.status;
+      if (status === "No Go :(") {
+        var menu = document.getElementById("status-menu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      } else if (status === "GOING!") {
+        setStatus("No Go :(");
+      }
+    });
+  }
+  function setStatus(value) {
+    var timer = document.getElementById('going-until').value;
+    var status_button = document.getElementById("status-button");
+
+    if (value === "GOING!") {
+      status_button.innerHTML = "Stop.";
+    } else if (value === "No Go :(") {
+      status_button.innerHTML = "GO!";
+    }
+
+    data = {
+      status: value
+    };
+
+    fetch('/set_status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('current-status').innerHTML = data.status;
+    });
+  }
+
+  function addFriend(username){
+    console.log(username);
+    fetch('/add_friend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ friendee: username })
+    })
+    .then(response => console.log(response.text()))
+    .catch(error => console.error('Error:', error));
+    
+    fetchFriends();
+  }
+</script>
+</head>
+<body>
+
+<div class="container">
+
+  <div id="username" class="section" style="font-size: 30px">
+    <strong><center>{{username}}</center></strong>
+  </div>
+
+  <div id="status" class="section">
+    <strong>Status:</strong> <span id="current-status">{{status}}</span>
+  </div>
+
+  <div id="go" class="section">
+    <button class="go-button" id="status-button" onclick="toggleStatusMenu()">GO!</button>
+    <div id="status-menu" class="section" style="display:none;">
+      <label for="going-until">Going For:</label>
+      <select id="going-until">
+        <option value="60">1 hour</option>
+        <option value="120">2 hours</option>
+        <option value="180">3 hours</option>
+      </select>
+      <label for="people-count" style="display:none;">People Count (optional):</label>
+      <input type="number" id="people-count" min="1" style="display:none;">
+      <button onclick="toggleStatusMenu(); setStatus('GOING!')">Set</button>
+    </div>
+  </div>
+
+  <div id="friends" class="section">
+    <strong>Friends:</strong>
+    <div id="friends-list">
+    </div>
+  </div>
+
+  <div id="add-friends" class="section">
+    <strong>Add Friends:</strong>
+    <input type="text" id="friendee" placeholder="Username">
+    <button onclick="addFriend(document.getElementById('friendee').value)">Add</button>
+  </div>
+
+</div>
+
+</body>
+</html>

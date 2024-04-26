@@ -1,0 +1,155 @@
+<!doctype html>
+<html class="zc-html">
+
+<head>
+  <meta charset="utf-8">
+  <title>ZingSoft Demo</title>
+  <script nonce="undefined" src="https://cdn.zingchart.com/zingchart.min.js"></script>
+  <style>
+    .chart--container {
+      height: 100%;
+      width: 100%;
+      min-height: 530px;
+    }
+
+    .zc-ref {
+      display: none;
+    }
+  </style>
+</head>
+​
+
+<body class="zc-body">
+  ​
+  <div id="myChart" class="chart--container">
+    <a href="https://www.zingchart.com/" rel="noopener" class="zc-ref">Powered by ZingChart</a>
+  </div>
+
+  <script>
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"]; // HELPER METHODS
+    // -----------------------------
+    let state = (text) => {
+      let color = '#808080';
+      let affiliation = text.match(/\(.*\)/)[0][1];
+
+      if (affiliation === 'D') color = '#33647a';
+      else if (affiliation === 'R') color = '#ef4156';
+
+      let stateObj = {
+        tooltip: {
+          text: text,
+          borderColor: color,
+          borderWidth: '2px',
+          shadow: false,
+          textAlign: 'left'
+        },
+        backgroundColor: color,
+        borderColor: '#fff'
+      };
+
+      if (affiliation === 'D') stateObj.group = 1;
+      else if (affiliation === 'R') stateObj.group = 2;
+      else stateObj.group = 3;
+
+      return stateObj;
+    }
+
+    // CHART CONFIG
+    // -----------------------------
+    let chartConfig = {
+      type: null,
+      backgroundColor: '#9DDCF9',
+      title: {
+        text: 'GOVERNORS ROSTER 2019',
+        backgroundColor: 'none',
+        fontColor: '#000'
+      },
+      shapes: [{
+        type: 'zingchart.maps',
+        options: {
+          id: 'map',
+          name: 'usa',
+          scale: true,
+          style: {
+            group: 1,
+            hoverState: {
+              alpha: 0.3,
+              borderColor: '#555',
+              borderWidth: '1px'
+            },
+            items: {
+              AK: state('Alaska <br><br>Mike Dunleavy (R) <br><br>Present Term Began: Dec 2018<br>Present Term Ends: Dec 2022'),
+              AL: state('Alabama <br><br>Kay Ivey (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              AR: state('Arkansas <br><br>Asa Hutchinson (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              AZ: state('Arizona <br><br>Doug Ducey (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              CA: state('California <br><br>Gavin Newsom (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              CO: state('Colorado <br><br>Jared Polis (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              CT: state('Connecticut <br><br>Ned Lamont (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              DC: {
+                visible: false
+              },
+              DE: state('Delaware <br><br>John Carney (D) <br><br>Present Term Began: Jan 2017<br>Present Term Ends: Jan 2021'),
+              FL: state('Florida <br><br>Ron DeSantis (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              GA: state('Georgia <br><br>Brian Kemp (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              HI: state('Hawaii <br><br>David Ige (D) <br><br>Present Term Began: Dec 2018<br>Present Term Ends: Dec 2022'),
+              IA: state('Iowa <br><br>Kim Reynolds (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              ID: state('Idaho <br><br>Brad Little (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              IL: state('Illinois <br><br>JB Pritzker (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              IN: state('Indiana <br><br>Eric Holcomb (R) <br><br>Present Term Began: Jan 2017<br>Present Term Ends: Jan 2021'),
+              KS: state('Kansas <br><br>Laura Kelly (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              KY: state('Kentucky <br><br>Matt Bevin (R) <br><br>Present Term Began: Dec 2015<br>Present Term Ends: Dec 2019'),
+              LA: state('Louisiana <br><br>John Bel Edwards (D) <br><br>Present Term Began: Jan 2016<br>Present Term Ends: Jan 2020'),
+              MA: state('Massachusetts <br><br>Charlie Baker (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              MD: state('Maryland <br><br>Larry Hogan (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              ME: state('Maine <br><br>Janet Mills (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              MI: state('Michigan <br><br>Gretchen Whitmer (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              MN: state('Minnesota <br><br>Tim Walz (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              MO: state('Missouri <br><br>Mike Parson (R) <br><br>Present Term Began: Jun 2018<br>Present Term Ends: Jan 2021'),
+              MS: state('Mississippi <br><br>Phil Bryant (R) <br><br>Present Term Began: Jan 2016<br>Present Term Ends: Jan 2020'),
+              MT: state('Montana <br><br>Steve Bullock (D) <br><br>Present Term Began: Jan 2017<br>Present Term Ends: Jan 2021'),
+              NC: state('North Carolina <br><br>Roy Cooper (D) <br><br>Present Term Began: Jan 2017<br>Present Term Ends: Jan 2021'),
+              ND: state('North Dakota <br><br>Doug Burgum (R) <br><br>Present Term Began: Dec 2016<br>Present Term Ends: Dec 2020'),
+              NE: state('Nebraska <br><br>Pete Ricketts (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              NH: state('New Hampshire <br><br>Chris Sununu (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2021'),
+              NJ: state('New Jersey <br><br>Phil Murphy (D) <br><br>Present Term Began: Jan 2018<br>Present Term Ends: Jan 2022'),
+              NM: state('New Mexico <br><br>Michelle Lujan Grisham (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              NV: state('Nevada <br><br>Steve Sisolak (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              NY: state('New York <br><br>Andrew Cuomo (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              OH: state('Ohio <br><br>Mike DeWine (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              OK: state('Oklahoma <br><br>Kevin Stitt (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              OR: state('Oregon <br><br>Kate Brown (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              PA: state('Pennsylvania <br><br>Tom Wolf (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              RI: state('Rhode Island <br><br>Gina Raimondo (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              SC: state('South Carolina <br><br>Henry McMaster (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              SD: state('South Dakota <br><br>Kristi Noem (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              TN: state('Tennessee <br><br>Bill Lee (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              TX: state('Texas <br><br>Greg Abbott (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              UT: state('Utah <br><br>Gary R. Herbert (R) <br><br>Present Term Began: Jan 2017<br>Present Term Ends: Jan 2021'),
+              VA: state('Virginia <br><br>Ralph Northam (D) <br><br>Present Term Began: Jan 2018<br>Present Term Ends: Jan 2022'),
+              VT: state('Vermont <br><br>Phil Scott (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2021'),
+              WA: state('Washington <br><br>Jay Inslee (D) <br><br>Present Term Began: Jan 2017<br>Present Term Ends: Jan 2021'),
+              WI: state('Wisconsin <br><br>Tony Evers (D) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023'),
+              WV: state('West Virginia <br><br>Jim Justice (R) <br><br>Present Term Began: Jan 2017<br>Present Term Ends: Jan 2021'),
+              WY: state('Wyoming <br><br>Mark Gordon (R) <br><br>Present Term Began: Jan 2019<br>Present Term Ends: Jan 2023')
+            }
+          },
+          y: '25px'
+        }
+      }],
+      source: {
+        text: 'Data Provided by:https://www.nga.org/wp-content/uploads/2019/07/Governors-Roster.pdf',
+        fontColor: '#000'
+      }
+    };
+
+    // RENDER CHARTS
+    // -----------------------------
+    zingchart.loadModules('maps, maps-usa');
+    zingchart.render({
+      id: 'myChart',
+      data: chartConfig
+    });
+  </script>
+</body>
+
+</html>
